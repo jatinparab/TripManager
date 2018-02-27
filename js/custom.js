@@ -11,7 +11,7 @@ function ValidateEmail(mail)
 
 function login_click(){
     //alert("logl");
-    if(document.getElementById("login_email").value == null || document.getElementById("login_password").value == null){
+    if(!document.getElementById("login_email").value|| !document.getElementById("login_password").value){
         alert("Please fill all the fields!");
         return;
     }else if(!ValidateEmail(document.getElementById("login_email").value)){
@@ -52,8 +52,8 @@ function signup_click(){
     var email = $('#signup_email').val();
     var password = $('#signup_password').val();
     var contact_number = $('#signup_contact_number').val();
-    alert(contact_number);
-    alert(gender);
+   // alert(contact_number);
+    //alert(gender);
     if(!gender || !username || !email|| !password  || !contact_number){
         alert("Please fill out all the fields!");
         return
@@ -70,6 +70,43 @@ function signup_click(){
         }
         
     }
+}
+
+function book_click(owner){
+    var select = document.getElementById("treklist").value;
+    var date = document.getElementById("trekdate").value;
+    if(select == -1){
+        alert("Please select your trek");
+        return
+    }else if(!trekdate){
+        alert("Please select a date");
+    }else{
+        if(book(owner, select, date)=='success'){
+            alert("Successfully booked your trip");
+            window.location = 'booked.php';
+        }else{
+            alert("There was an error in booking your trip, please try again later!");
+        }
+    }
+}
+
+function book(owner, id, date){
+    var retval;
+    //alert(owner);
+    retval = $.ajax({
+        type: "POST",
+        url: "util/book.php",
+        async: false,
+        data: {
+            id: id,
+            date: date,
+            owner: owner
+        },
+        success: function (data) {
+            
+        }
+    }).responseText;
+    return retval;
 }
 
 function register(username, email, password, contact_number, gender){
@@ -91,6 +128,5 @@ function register(username, email, password, contact_number, gender){
     }).responseText;
     //alert(retval);
     return retval;
-    
 }
 

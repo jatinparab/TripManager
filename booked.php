@@ -2,7 +2,8 @@
 require_once 'util/conn.php';
 session_start();
 //echo $_SESSION['isAdmin'];
-if(isset($_SESSION)){
+if(isset($_SESSION["id"])){
+    $id = $_SESSION['id'];
   if($_SESSION['isAdmin']==1){
     header('Location: admin.php');
   }
@@ -10,10 +11,10 @@ if(isset($_SESSION)){
   header('Location: index.php');
 }
 
-$sql = "SELECT * FROM trips";
+$sql = "SELECT * FROM booked_trips WHERE owner='$id'";
     //echo $sql;
 $res = $con -> query($sql);
-$res2 = $con -> query($sql);
+
 
 
 
@@ -44,14 +45,12 @@ $res2 = $con -> query($sql);
 						<a class="nav-link" href="aboutus.php">About Us</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#packages">Trips</a>
-          </li>
-          <?php if(isset($_SESSION["id"])){ ?>
-          <li class="nav-item">
+						<a class="nav-link" href="index.php">Trips</a>
+                    </li>
+                    <li class="nav-item">
 						<a class="nav-link" href="booked.php">Booked Trips</a>
-          </li>
-          <?php } ?>
-          <li class="nav-item">
+					</li>
+                    <li class="nav-item">
 						<a class="nav-link" href="contactus.php">Contact us</a>
 					</li>
 				</ul>
@@ -83,33 +82,34 @@ $res2 = $con -> query($sql);
   </div>
 </div>
 
-		<div class="container p-t-2">
-			<h2 id="packages" class="display-4 text-xs-center m-y-3 text-muted">Packages</h2>
-      <?php while($row = $res -> fetch_assoc()){ ?>
-				<div class="col-md-6 col-lg-4">
+	<div class="container p-t-2">
+			<h2 id="packages" class="display-4 text-xs-center m-y-3 text-muted">Your Booked Trips</h2>
+            <?php
+            //echo($res);
+            while($row = $res -> fetch_assoc()){
+                $x = $row['trip_id'];
+                $sql2 = "SELECT * FROM trips WHERE id='$x'";
+                $res2 = $con -> query($sql2);
+                $row2 = $res2 -> fetch_assoc();
+             ?>
+                <div class="col-md-6 col-lg-4">
 					<div class="card">
-						<img class="card-img-top img-fluid" src="<?php echo $row["img"] ?>" alt="Card image cap">
+						<img class="card-img-top img-fluid" src="<?php echo $row2["img"] ?>" alt="Card image cap">
 						<div class="card-block">
-							<h4 class="card-title"><?php echo $row["title"] ?></h4>
+							<h4 class="card-title"><?php echo $row2["title"] ?></h4>
 							<p class="card-text">
-                PRICE: Rs <?php echo $row["price"] ?> <br>
-                REGION: <?php echo $row["region"] ?><br>
-                DIFFICULTY: <?php echo $row["difficulty"] ?> <br>
-                LENGTH: <?php echo $row["length"] ?> km <br>
-                ALTITUDE: <?php echo $row["altitude"] ?> ft <br>
-                DURATION: <?php echo $row["duration"] ?> days
-								<button type="button" class="btn btn-info-outline btn-lg center-block m-y-1" data-toggle="modal" 
-                <?php if(isset($_SESSION["id"])){ ?>
-                data-target="#booknow"
-                <?php }else{ ?>
-                data-target="#register"
-                <?php } ?>
-                >Book Now</button>
+                PRICE: Rs <?php echo $row2["price"] ?> <br>
+                REGION: <?php echo $row2["region"] ?><br>
+                DIFFICULTY: <?php echo $row2["difficulty"] ?> <br>
+                LENGTH: <?php echo $row2["length"] ?> km <br>
+                ALTITUDE: <?php echo $row2["altitude"] ?> ft <br>
+                DURATION: <?php echo $row2["duration"] ?> days <br>
+				<strong>BOOKED FOR: <?php echo $row["date"]; ?></strong>
               </p>
 						</div>
 					</div>
         </div>
-      <?php } ?>
+            <?php } ?>
     </div><!-- /.container -->
     
     <footer style="padding: 30px;">
@@ -222,85 +222,7 @@ $res2 = $con -> query($sql);
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 <!--Book Now-->
-<div id="booknow" class="modal fade">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-info">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title text-xs-center">Book Now</h4>
-      </div>
-      <div class="modal-body">
-        <!-- registration form -->
-       
-          <h5 class="m-b-2">Basic Info</h5>
 
-         <fieldset>
-           <label for="number" class="form-control-label p-l-0">Trek:</label>
-           <select id="treklist">
-             <option value="-1">Select your Trek</option>
-             <?php 
-              while($row = $res2 -> fetch_assoc()){
-             ?>
-             <option value="<?php echo $row["id"]; ?>"><?php echo $row["title"]; ?></option>
-             <?php } ?>
-           </select>
-         </fieldset>
-         <fieldset>
-           <label for="date">Date:</label>
-           <input type="date" id="trekdate" min="2018-01-04">
-         </fieldset>
-          <hr class="m-b-2">
-          <button onclick="book_click('<?php echo $_SESSION["id"]; ?>')"  class="btn btn-primary btn-lg center-block">Book</button>
-
- <!-- /registration form -->
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal --><div id="register" class="modal fade">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-info">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title text-xs-center">Sign Up</h4>
-      </div>
-      <div class="modal-body">
-        <!-- registration form -->
-        <form>
-          <h5 class="m-b-2">Basic Info</h5>
-          <fieldset class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Email:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Password:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-           <label for="number" class="form-control-label p-l-0">Contact number:</label>
-           <input type="number" class="form-control form-control-danger" id="mail">
-         </fieldset>
-           <fieldset class="form-group">
-             <label for="gender">Gender</label><br>
-             <input type="radio" name="gender" value="male" checked> Male<br>
-             <input type="radio" name="gender" value="female"> Female<br>
-             <input type="radio" name="gender" value="other"> Other
-           </fieldset>
-          <hr class="m-b-2">
-          <button type="submit" class="btn btn-primary btn-lg center-block">Register</button>
-
-        </form><!-- /registration form -->
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <div id="feedback" class="modal fade">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -313,26 +235,14 @@ $res2 = $con -> query($sql);
       <div class="modal-body">
         <!-- registration form -->
         <form>
-          <h5 class="m-b-2">Basic Info</h5>
+          <h5 class="m-b-2">Feedback</h5>
           <fieldset class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Email:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Password:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
            <label for="number" class="form-control-label p-l-0">Feedback:</label>
            <textarea rows="4" cols="50">
            </textarea>
          </fieldset>
           <hr class="m-b-2">
-          <button type="submit" class="btn btn-primary btn-lg center-block">Register</button>
+          <button type="submit" class="btn btn-primary btn-lg center-block">Submit Feedback</button>
 
         </form><!-- /registration form -->
       </div>

@@ -9,8 +9,8 @@
     //echo $id;
     //echo $pass;
     
-    $sql = "INSERT INTO users (username, email, password, contact_number, gender)
-    VALUES ('$username', '$email', '$password', '$contact_number','$gender')";
+    $sql = "INSERT INTO users (username, email, password, contact_number, gender, isAdmin)
+    VALUES ('$username', '$email', '$password', '$contact_number','$gender','0')";
 
     //echo $sql;
     $res = $con -> query($sql);
