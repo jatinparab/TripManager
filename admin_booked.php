@@ -100,7 +100,64 @@ $res5 = $con -> query($sql5);
         </table>
         </div>
 
-   
+    <div style="padding-top:0px;padding-left:100px; padding-right:100px;padding-bottom:50px;">
+        <h2>Booked Trip Info</h2>
+        <table class="table table-bordered table-hover">
+          
+          <thead>
+            
+            <tr>
+              <th>Trip Name</th>
+              <th>Booked By</th>
+              <th>Booking Date</th>
+            </tr>
+          </thead>
+          <tbody>
+              <?php while($row2 = $res2 -> fetch_assoc()){ ?>
+            <tr>
+              <td><?php 
+              $trip_id = $row2["trip_id"];
+              $sql3 = "SELECT * FROM trips WHERE id='$trip_id'";
+              $res3 = $con -> query($sql3);
+              $row3 = $res3 -> fetch_assoc();
+
+              
+              echo $row3["title"];
+              
+              ?>
+              
+            </td>
+            <td>
+            <?php 
+              $owner_id = $row2["owner"];
+              $sql4 = "SELECT * FROM users WHERE id='$owner_id'";
+              $res4 = $con -> query($sql4);
+              $row4 = $res4 -> fetch_assoc();
+              echo $row4["username"];
+              
+              ?>
+
+
+            </td>
+            <td>
+
+            <?php
+                echo $row2["date"];
+
+            ?>
+
+            </td>
+              
+            </tr>
+
+            <?php } ?>
+            
+          </tbody>
+          
+        </table>
+    </div>
+
+  
 		
     <!-- jQuery first, then bootstrap js -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

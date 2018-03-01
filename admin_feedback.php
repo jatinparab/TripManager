@@ -9,12 +9,12 @@ if(isset($_SESSION)){
     header('Location: index.php');
 }
 //session_destroy();
-$sql = "SELECT * FROM users WHERE isAdmin='0'";
+
 $sql2 = "SELECT * FROM booked_trips";
 $sql5 = "SELECT * FROM trips";
-$res = $con -> query($sql);
-$res2 = $con -> query($sql2);
-$res5 = $con -> query($sql5);
+$new = "SELECT * FROM feedback";
+$new2 = $con -> query($new);
+
 
 
 
@@ -37,7 +37,7 @@ $res5 = $con -> query($sql5);
 		<nav class="navbar navbar-dark bg-primary navbar-fixed-top">
 			<div class="container">
 				<ul class="nav navbar-nav">
-        <li class="nav-item">
+					<li class="nav-item">
 						<a class="nav-link" href="admin.php">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
@@ -65,32 +65,30 @@ $res5 = $con -> query($sql5);
 
 		<!-- carousel -->
         <div style="padding: 100px;padding-bottom:50px;">
-        <h2>Registered User Info</h2>
+        <h2>Feedbacks Recieved</h2>
         <table class="table table-bordered table-hover">
           
           <thead>
             
             <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Contact Number</th>
-              <th>Gender</th>
+              <th>Feedback</th>
+              <th>Sent By</th>
             </tr>
           </thead>
           <tbody>
-              <?php while($row = $res -> fetch_assoc()){ ?>
+              <?php while($row = $new2 -> fetch_assoc()){ ?>
             <tr>
-              <td><?php echo $row["username"]; ?></td>
-              <td><?php echo $row["email"]; ?></td>
-              <td><?php echo $row["contact_number"]; ?></td>
-              <td><?php if($row["gender"] == 0){
-                  echo 'Male';
-              }else if($row["gender"] == 1){
-                  echo 'Female';
-              }else if($row["gender"]==2){
-                  echo 'Other';
-              }
+              <td><?php echo $row["content"]; ?></td>
+              <td><?php 
+              $id_owner = $row["owner"];
+              $sql = "SELECT * FROM users WHERE id='$id_owner'";
+              $res = $con -> query($sql);
+              $row2 = $res -> fetch_assoc();
+
+              echo $row2["username"];
+              
               ?></td>
+              
             </tr>
 
             <?php } ?>

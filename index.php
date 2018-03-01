@@ -308,33 +308,21 @@ $res2 = $con -> query($sql);
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title text-xs-center">Sign Up</h4>
+        <h4 class="modal-title text-xs-center">Feedback Form</h4>
       </div>
       <div class="modal-body">
         <!-- registration form -->
-        <form>
-          <h5 class="m-b-2">Basic Info</h5>
+      
+   
           <fieldset class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Email:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
-            <label for="mail" class="form-control-label p-l-0">Password:</label>
-            <input type="email" class="form-control form-control-danger" id="mail">
-          </fieldset>
-          <fieldset class="form-group has-danger">
            <label for="number" class="form-control-label p-l-0">Feedback:</label>
-           <textarea rows="4" cols="50">
+           <textarea id="feedback_text"  rows="4" cols="50">
            </textarea>
          </fieldset>
           <hr class="m-b-2">
-          <button type="submit" class="btn btn-primary btn-lg center-block">Register</button>
+          <button onclick="feedback_click('<?php echo $_SESSION["id"]; ?>')" class="btn btn-primary btn-lg center-block">Submit Feedback</button>
 
-        </form><!-- /registration form -->
+    <!-- /registration form -->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

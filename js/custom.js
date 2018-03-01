@@ -27,6 +27,35 @@ function login_click(){
     }
 }
 
+function remove_click(){
+    var trek_id = $('#treklist').val();
+    if(confirm("Are you sure?")){
+        if(remove_trek(trek_id) == 'success'){
+            alert("Succesfully removed trip!");
+            window.location = '';
+        }else{
+            alert("There was an error removing the trip, please try again later");
+        }
+    }
+}
+
+function remove_trek(id){
+    var retval;
+    retval = $.ajax({
+        type: "POST",
+        url: "util/remove_trek.php",
+        async: false,
+        data: {
+            id: id,
+        },
+        success: function (data) {
+            
+        }
+    }).responseText;
+    //alert(retval);
+    return retval;
+}
+
 function login(email, password){
     var retval;
     retval = $.ajax({
@@ -44,6 +73,34 @@ function login(email, password){
     //alert(retval);
     return retval;
     
+}
+
+function feedback_click(id){
+    
+    var feedback = $("#feedback_text").val();
+    if(!feedback){
+        alert("Please enter a feedback");
+        return;
+    }else{
+        retval = $.ajax({
+            type: "POST",
+            url: "util/feedback_submit.php",
+            async: false,
+            data: {
+                feedback: feedback,
+                id: id
+            },
+            success: function (data) {
+                
+            }
+        }).responseText
+        if(retval=='success'){
+            alert("Feedback submitted successfully!");
+            window.location = '';
+        }else{
+            alert("There was a problem in submitting the feedback, try again later");
+        }
+    }
 }
 
 function signup_click(){
@@ -70,6 +127,55 @@ function signup_click(){
         }
         
     }
+}
+
+function add_click(){
+    var name = $('#name').val();
+    var img = $('#img').val();
+    var price = $('#price').val();
+    var region = $('#region').val();
+    var difficulty = $('#difficulty').val();
+    var length = $('#length').val();
+    var altitude = $('#altitude').val();
+    var duration = $('#duration').val();
+   // alert(contact_number);
+    //alert(gender);
+    if(!name || !img || !price || !region || !difficulty || !length || !altitude || !duration ){
+        alert("Please fill out all the fields!");
+        return
+    }else{
+        if(add_trip(name,img,price,region,difficulty, length, altitude, duration) == 'success'){
+            alert("Successfully Added Trip!");
+            window.location = '';
+        }else{
+            alert("There was a error with adding trip, please try again later");
+        }
+        
+    }
+}
+
+function add_trip(name,img,price,region,difficulty, length, altitude, duration){
+    var retval;
+    //alert(owner);
+    retval = $.ajax({
+        type: "POST",
+        url: "util/add_trip.php",
+        async: false,
+        data: {
+            name: name,
+            img: img,
+            price: price,
+            region: region,
+            difficulty: difficulty,
+            length: length,
+            altitude: altitude,
+            duration: duration
+        },
+        success: function (data) {
+            
+        }
+    }).responseText;
+    return retval;
 }
 
 function book_click(owner){

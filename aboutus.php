@@ -18,18 +18,23 @@
   		<nav class="navbar navbar-dark bg-primary navbar-fixed-top">
   			<div class="container">
   				<ul class="nav navbar-nav">
-  					<li class="nav-item">
-  						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-  					</li>
-  					<li class="nav-item">
-  						<a class="nav-link" href="">About Us</a>
-  					</li>
-  					<li class="nav-item">
-  						<a class="nav-link" href="index.html">Trips</a>
-  					</li>
-            <li class="nav-item">
-  						<a class="nav-link" href="contactus.html">Contact Us</a>
-  					</li>
+          <li class="nav-item">
+						<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="aboutus.php">About Us</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="index.php#packages">Trips</a>
+          </li>
+          <?php if(isset($_SESSION["id"])){ ?>
+          <li class="nav-item">
+						<a class="nav-link" href="booked.php">Booked Trips</a>
+          </li>
+          <?php } ?>
+          <li class="nav-item">
+						<a class="nav-link" href="contactus.php">Contact us</a>
+					</li>
   				</ul>
   				<button type="button" class="btn btn-success-outline btn-md pull-sm-right" style="margin-left: 10px" data-toggle="modal" data-target="#login">Log in</button>
   				<button type="button" class="btn btn-success-outline btn-md pull-sm-right" data-toggle="modal" data-target="#register">Sign up</button>

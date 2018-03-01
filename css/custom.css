@@ -14,3 +14,34 @@
 .active {
 	transition: .4s;
 }
+
+table caption {
+	padding: .5em 0;
+}
+
+@media screen and (max-width: 767px) {
+  table caption {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.p {
+  text-align: center;
+  padding-top: 140px;
+  font-size: 14px;
+}
+#manage_buttons{
+	display: flex;
+	padding: 40px;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.flexboi1{
+	flex-basis: 10%;
+	margin: 5px;
+}
+.flexboi2{
+	flex-basis: 10%;
+	margin: 5px;
+}

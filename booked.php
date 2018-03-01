@@ -38,19 +38,21 @@ $res = $con -> query($sql);
 		<nav class="navbar navbar-dark bg-primary navbar-fixed-top">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="nav-item">
+				<li class="nav-item">
 						<a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="aboutus.php">About Us</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="index.php">Trips</a>
-                    </li>
-                    <li class="nav-item">
+						<a class="nav-link" href="index.php#packages">Trips</a>
+          </li>
+          <?php if(isset($_SESSION["id"])){ ?>
+          <li class="nav-item">
 						<a class="nav-link" href="booked.php">Booked Trips</a>
-					</li>
-                    <li class="nav-item">
+          </li>
+          <?php } ?>
+          <li class="nav-item">
 						<a class="nav-link" href="contactus.php">Contact us</a>
 					</li>
 				</ul>
@@ -230,25 +232,26 @@ $res = $con -> query($sql);
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title text-xs-center">Sign Up</h4>
+        <h4 class="modal-title text-xs-center">Feedback Form</h4>
       </div>
       <div class="modal-body">
         <!-- registration form -->
-        <form>
-          <h5 class="m-b-2">Feedback</h5>
+      
+   
           <fieldset class="form-group">
            <label for="number" class="form-control-label p-l-0">Feedback:</label>
-           <textarea rows="4" cols="50">
+           <textarea id="feedback_text"  rows="4" cols="50">
            </textarea>
          </fieldset>
           <hr class="m-b-2">
-          <button type="submit" class="btn btn-primary btn-lg center-block">Submit Feedback</button>
+          <button onclick="feedback_click('<?php echo $_SESSION["id"]; ?>')" class="btn btn-primary btn-lg center-block">Submit Feedback</button>
 
-        </form><!-- /registration form -->
+    <!-- /registration form -->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- /.modal -->
 
     <!-- jQuery first, then bootstrap js -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
