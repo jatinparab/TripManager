@@ -12,15 +12,19 @@ function ValidateEmail(mail)
 function login_click(){
     //alert("logl");
     if(!document.getElementById("login_email").value|| !document.getElementById("login_password").value){
+        // js validation for checking blank fields
         alert("Please fill all the fields!");
         return;
     }else if(!ValidateEmail(document.getElementById("login_email").value)){
+        // js validation for checking valid email iD
         alert("Please enter a valid email ID!");
     }else{
-        if(login(document.getElementById("login_email").value, document.getElementById("login_password").value)== 'success'){
-            window.location = '';
+        // checking return value from ajax 
+        if(login(document.getElementById("login_email").value, document.getElementById("login_password").value) == 'success'){
+            window.location = 'index.php';
             return
         }else{
+            // if return value is anything else than success, then return function, and dont let sign in.
             alert("Invalid email or password, sign up first.");
             return
         }
@@ -104,6 +108,7 @@ function feedback_click(id){
 }
 
 function signup_click(){
+
     var gender = $("input[type='radio'][name='gender']:checked").val();
     var username = $('#signup_name').val();
     var email = $('#signup_email').val();
@@ -119,10 +124,12 @@ function signup_click(){
     }else if(password.length < 6){
         alert("Please enter a password more than 6 characters");
     }else{
+        // checking value return value if it is success, then alert successfuly logedd in 
         if(register(username,email,password,contact_number,gender) == 'success'){
             alert("Successfully Registered! Please login");
             window.location = '';
         }else{
+            //else alert there was an error
             alert("There was a error with registration, please try again later");
         }
         
@@ -186,22 +193,67 @@ function book_click(owner){
         return
     }else if(!trekdate){
         alert("Please select a date");
-    }else{
+    }else{//checking return value if it is success
         if(book(owner, select, date)=='success'){
+            // passing data from form to book function
             alert("Successfully booked your trip");
             window.location = 'booked.php';
         }else{
+            //if return value was anything else than success, return with alert;
             alert("There was an error in booking your trip, please try again later!");
+        }
+    }
+}
+
+function cancel_click(owner){
+    var select = document.getElementById("treklist2").value;
+    var date = document.getElementById("trekdate2").value;
+    if(select == -1){
+        alert("Please select your trek");
+        return
+    }else if(!trekdate){
+        alert("Please select a date");
+    }else{//checking return value if it is success
+        if(cancel(owner, select, date)=='success'){
+            // passing data from form to book function
+            alert("Successfully cancelled your trip");
+            window.location = 'booked.php';
+        }else{
+            //if return value was anything else than success, return with alert;
+            alert("There was an error in cancelling your trip, please try again later!");
         }
     }
 }
 
 function book(owner, id, date){
     var retval;
+    // retrieveing data here
     //alert(owner);
     retval = $.ajax({
+        // passing function to ajax page book.php
         type: "POST",
         url: "util/book.php",
+        async: false,
+        data: {
+            id: id,
+            date: date,
+            owner: owner
+        },
+        success: function (data) {
+            
+        }
+    }).responseText;
+    return retval;
+}
+
+function cancel(owner, id, date){
+    var retval;
+    // retrieveing data here
+    //alert(owner);
+    retval = $.ajax({
+        // passing function to ajax page book.php
+        type: "POST",
+        url: "util/cancel.php",
         async: false,
         data: {
             id: id,
@@ -218,6 +270,8 @@ function book(owner, id, date){
 function register(username, email, password, contact_number, gender){
     var retval;
     retval = $.ajax({
+        // retrieving data passed from signup_click function
+        // passing variables to ajax php page
         type: "POST",
         url: "util/register.php",
         async: false,
@@ -233,6 +287,7 @@ function register(username, email, password, contact_number, gender){
         }
     }).responseText;
     //alert(retval);
+    //returning value from ajax call 
     return retval;
 }
 

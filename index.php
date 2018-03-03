@@ -14,6 +14,8 @@ $sql = "SELECT * FROM trips";
     //echo $sql;
 $res = $con -> query($sql);
 $res2 = $con -> query($sql);
+$res3 = $con -> query($sql);
+
 
 
 
@@ -105,6 +107,14 @@ $res2 = $con -> query($sql);
                 data-target="#register"
                 <?php } ?>
                 >Book Now</button>
+
+                <button type="button" class="btn btn-info-outline btn-lg center-block m-y-1" data-toggle="modal" 
+                <?php if(isset($_SESSION["id"])){ ?>
+                data-target="#cancel"
+                <?php }else{ ?>
+                data-target="#register"
+                <?php } ?>
+                >Cancel Trip</button>
               </p>
 						</div>
 					</div>
@@ -258,7 +268,49 @@ $res2 = $con -> query($sql);
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal --><div id="register" class="modal fade">
+</div><!-- /.modal -->
+
+
+<div id="cancel" class="modal fade">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title text-xs-center">Book Now</h4>
+      </div>
+      <div class="modal-body">
+        <!-- registration form -->
+       
+          <h5 class="m-b-2">Basic Info</h5>
+
+         <fieldset>
+           <label for="number" class="form-control-label p-l-0">Trek:</label>
+           <select id="treklist2">
+             <option value="-1">Select your Trek</option>
+             <?php 
+              while($row = $res3 -> fetch_assoc()){
+             ?>
+             <option value="<?php echo $row["id"]; ?>"><?php echo $row["title"]; ?></option>
+             <?php } ?>
+           </select>
+         </fieldset>
+         <fieldset>
+           <label for="date">Date:</label>
+           <input type="date" id="trekdate2" min="2018-01-04">
+         </fieldset>
+          <hr class="m-b-2">
+          <button onclick="cancel_click('<?php echo $_SESSION["id"]; ?>')"  class="btn btn-primary btn-lg center-block">Book</button>
+
+ <!-- /registration form -->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="register" class="modal fade">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-info">
@@ -301,6 +353,12 @@ $res2 = $con -> query($sql);
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+
+
+
 <div id="feedback" class="modal fade">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
